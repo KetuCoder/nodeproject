@@ -39,10 +39,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push To DockerHub
-        run: |
-          sudo docker push cloudketan/nodeapp:latest
-
       - name: SetUp Kubectl
         uses: azure/setup-kubectl@v4
         with:
