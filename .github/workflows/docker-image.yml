@@ -40,5 +40,5 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Start And Run Container
-        run: sudo docker run -d -p 3000:3000 --name node-container nodeapp:latest
+        run: sudo docker run -d -p 3000:3000 --name node-container cloudketan/nodeapp:latest
 
