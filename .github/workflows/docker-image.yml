@@ -31,7 +31,7 @@ jobs:
         run: npm install --save-dev jest
 
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME}}/nodejs .
+        run: sudo docker build -t ${{ secrets.DOCKER_USERNAME}}/nodejs .
 
       - name: Login To DockerHub
         uses: docker/login-action@v3
@@ -41,7 +41,7 @@ jobs:
 
       - name: Push To DockerHub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/nodejs
+          sudo docker push ${{ secrets.DOCKER_USERNAME }}/nodejs
 
       - name: SetUp Kubectl
         uses: azure/setup-kubectl@v4
