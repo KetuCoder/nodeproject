@@ -39,16 +39,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: SetUp Kubectl
-        uses: azure/setup-kubectl@v4
-        with:
-          version: 'latest'
+      - name: Start And Run Container
+        run: sudo docker run -d -p 3000:3000 --name node-container nodeapp:latest
 
-      - name: Configure Kubeconfig
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
-          
-      - name: Deploy To Kubernetes
-        run: |
-          sudo kubectl apply -f K8s/
