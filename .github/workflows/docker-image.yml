@@ -1,0 +1,58 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build-and-deploy:
+
+    runs-on: self-hosted
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout/@v4
+
+      - name: SetUp Node.Js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Dependency Check
+        run: npm audit --audit-level=moderate
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME}}/nodejs .
+
+      - name: Login To DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push To DockerHub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/nodejs
+
+      - name: SetUp Kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest'
+
+      - name: Configure Kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+          
+      - name: Deploy To Kubernetes
+        run: |
+          sudo kubectl apply -f K8s/
