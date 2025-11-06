@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: node-app
-        image: cloudketan/nodejs:latest
+        image: cloudketan/nodeapp:latest
         ports:
         - containerPort: 3000
