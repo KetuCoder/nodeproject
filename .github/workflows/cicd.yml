@@ -42,3 +42,10 @@ jobs:
       - name: Start And Run Container
         run: sudo docker run -d -p 3000:3000 --name node-container cloudketan/nodeapp:latest
 
+      - name: Setup Kubeconfig
+        run: |
+              mkdir -p ~/.kube
+              echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > ~/.kube/config
+
+      - name: Deploy Kubernetes Manifests Files
+        run: kubectl apply -f K8s/
