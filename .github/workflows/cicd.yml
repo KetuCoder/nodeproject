@@ -31,7 +31,7 @@ jobs:
         run: npm install --save-dev jest
 
       - name: Build Docker Image
-        run: sudo docker build -t ${{ secrets.DOCKER_USERNAME}}/nodeapp:latest .
+        run: sudo docker build -t ${{ secrets.DOCKER_USERNAME}}/nodeproject:v1 .
 
       - name: Login To DockerHub
         uses: docker/login-action@v3
@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Start And Run Container
-        run: sudo docker run -d -p 3000:3000 --name node-container cloudketan/nodeapp:latest
+        run: sudo docker run -d -p 3000:3000 --name node-container cloudketan/nodeproject:v1
 
       - name: Setup Kubeconfig
         run: |
